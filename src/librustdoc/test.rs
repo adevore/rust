@@ -10,9 +10,9 @@
 
 use std::cell::RefCell;
 use std::hashmap::HashSet;
+use std::io::Process;
 use std::local_data;
 use std::os;
-use std::run;
 use std::str;
 
 use extra::tempfile::TempDir;
@@ -126,7 +126,7 @@ fn runtest(test: &str, cratename: &str, libs: HashSet<Path>, should_fail: bool) 
     driver::compile_input(sess, cfg, &input, &out, &None);
 
     let exe = outdir.path().join("rust_out");
-    let out = run::process_output(exe.as_str().unwrap(), []);
+    let out = Process::output(exe.as_str().unwrap(), []);
     match out {
         Err(e) => fail!("couldn't run the test: {}", e),
         Ok(out) => {
